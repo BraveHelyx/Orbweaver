@@ -1,5 +1,7 @@
 #!/usr/bin/python
 # Written by Bruce Hely for funzies in 2017
+
+
 def format_targets(targets):
 	formattedTargets = []
 	i = 0
@@ -14,8 +16,9 @@ def format_responses(responses):
 		formattedResponses.append("%-8s%s" % (status, urlRes))
 	return formattedResponses
 
+# Primary function for rendering output.
+# Helper functions are above.
 def render_output(surface):
-
 	targets = format_targets(surface.get_pending())
 	responses = []
 	fmtRes = []
