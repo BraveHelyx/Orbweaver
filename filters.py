@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+# Written by Bruce Hely for funzies in 2017
+
 import re
 import sectionedURL
 

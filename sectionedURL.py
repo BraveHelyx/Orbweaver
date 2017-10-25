@@ -2,6 +2,7 @@
 
 import re
 
+# Written by Bruce Hely for funzies in 2017
 class SectionedURL:
 	def __init__(self):
 		self.proto = ''

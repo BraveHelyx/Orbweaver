@@ -1,4 +1,6 @@
 #!/usr/bin/python
+
+# Written by Bruce Hely for funzies in 2017
 # Peripheral scan of a domain.
 import sys, requests, re
 
@@ -16,7 +18,6 @@ from surface import *
 recursiveFlag = True
 
 def main():
-
 	# Check for incorrect usage
 	if (len(sys.argv) < 2) :
 		print 'Usage: ./%s <TARGET>' % sys.argv[0]
@@ -55,7 +56,7 @@ def run_scan(target, surface):
 
 	# Create the sectioned URL for the target
  	sUrl = section_url(target)
-	# sUrl.print_values()
+	sUrl.print_values()
 
 	# Get the sections once for easability
 	proto = sUrl.protocol()
@@ -69,12 +70,9 @@ def run_scan(target, surface):
 		# Never returns
 		scout_mode(surface)
 
-
-
 		print 'Done.'
 	else:
 		print 'Done.'
-
 
 # Call Main
 main()

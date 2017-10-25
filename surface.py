@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+# Written by Bruce Hely for funzies in 2017
 # Keeps track of the surface area of a recon investigation.
 class Surface:
 	def __init__(self):
@@ -35,6 +36,9 @@ class Surface:
 			if url not in keys:
 				pending.append(url)
 		return pending
+
+	def get_num_pending(self):
+		return len(self.get_pending())
 
 def print_requests(surface):
 	out = ''

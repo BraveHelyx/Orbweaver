@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+# Written by Bruce Hely for funzies in 2017
+
 from urlreqs import make_request
 from filters import filter_tags, categorise_tags, filter_local_links
 from render import render_output
@@ -32,8 +34,12 @@ def expand_target(sUrl, surface):
 
 def scout_mode(surface):
 	while(1):
-		print '\nOrbweaver Scout: "Where 2 next?"'
-		user_target_selection(surface)
+		if surface.get_num_pending() > 0:
+			print '\nOrbweaver Scout: "Where 2 next?"'
+			user_target_selection(surface)
+		else:
+			print '\nOrbweaver Scout: "Outta targets to shoot."'
+			exit()
 
 def user_target_selection(surface):
 	targets = surface.get_pending() # Get unexplored targets

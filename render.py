@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# Written by Bruce Hely for funzies in 2017
 def format_targets(targets):
 	formattedTargets = []
 	i = 0
