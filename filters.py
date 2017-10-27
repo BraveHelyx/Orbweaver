@@ -49,6 +49,7 @@ def categorise_tags(tags):
 	scripts = []
 	images = []
 	forms = []
+	localUrls = []
 
 	for tag in tags:
 		linkPattern = '<[ ]*a'
@@ -83,23 +84,32 @@ def categorise_tags(tags):
 	return (links, scripts, images, forms)
 
 # From a list of link tags, filter out the href value from each.
+# Works on '/', './' and 'sUrl.server()' values.
 def filter_local_links(sUrl, links):
 	localLinks = []
 	links = list(sorted(set(links)))
 
 	for link in links:
-		hrefPattern = ' href="(.+)"'
-		rePattern = re.compile(hrefPattern)
+		rePattern = re.compile(' href="(.+)"')
+
+		hostPattern = re.compile('^' + sUrl.server() + '/(.+)')
+		rootPattern = re.compile('^' + '/(.+)')
+		localPattern = re.compile('^' + './(.+)')
 
 		res = rePattern.search(link)
 		if res is not None:
 			url = res.group(1)
-			# print '[%s] has href=%s.' % (link, url)
 
-			# URL Extension
-			if url[0] == '/':
-				localLinks.append(sUrl.server() + '/' + url.lstrip('/'))
-		# else:
-			# print '[%s] has no href tag.' % link
+			rMatch = rootPattern.search(url)
+			hMatch = hostPattern.search(url)
+			lMatch = localPattern.search(url)
+
+			if rMatch is not None:
+				localLinks.append(sUrl.server() + '/' + rMatch.group(1))
+			elif lMatch is not None:
+
+				localLinks.append(sUrl.parent_dir() + '/' + lMatch.group(1))
+			elif hMatch is not None:
+				localLinks.append(sUrl.server() + '/' + hMatch.group(1))
 
 	return localLinks

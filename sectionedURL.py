@@ -3,12 +3,14 @@
 import re
 
 # Written by Bruce Hely for funzies in 2017
+
 class SectionedURL:
 	def __init__(self):
-		self.proto = ''
-		self.hostName = ''
-		self.filePath = ''
+		self.proto = '' 	# <PROTO>
+		self.hostName = '' 	# <HOSTNAME>
+		self.filePath = ''	# <FILEPATH>
 
+		self.parentDir = '' # <PARENTDIR>
 	# <PROTO>://<HOSTNAME><FILEPATH>
 	# http://www.example.com/file/1.jpg
 	def url(self):
@@ -30,6 +32,12 @@ class SectionedURL:
 		# outStr = self.proto + "://" + self.hostName
 		return self.proto + "://" + self.hostName
 
+	def filepath(self):
+		return self.filePath
+
+	def parent_dir(self):
+		return self.proto + "://" + self.hostName + self.parentDir
+
 	def set_protocol(self, newProto):
 		self.proto = newProto
 
@@ -39,12 +47,32 @@ class SectionedURL:
 	def set_filepath(self, newFilePath):
 		self.filePath = newFilePath
 
-	def filepath(self):
-		return self.filePath
+	def set_parentdir(self, newParent):
+		self.parentDir = newParent
 
 	def print_values(self):
-		print "[SectionedURL]\n\tProtocol: %s\n\tHostname: %s\n\tFile Path: %s\n" % (self.proto, self.hostName, self.filePath)
+		print "[SectionedURL]\n\tProtocol: %s\n\tHostname: %s\n\tFile Path: %s\n\tParent Dir: %s\n" % (self.proto, self.hostName, self.filePath, self.parentDir)
 
+	# Coupled Operators Below
+	def equal_urls(self, sUrl):
+		return self.url() == sUrl.url()
+
+	def equal_protocols(self, sUrl):
+		return self.protocol() == sUrl.protocol()
+
+	def equal_hostnames(self, sUrl):
+		return self.hostname == sUrl.hostname
+
+	def equal_filepaths(self, sUrl):
+		return self.filepath() == sUrl.filepath
+
+
+# This is the function you call in order to initialise the sectioned url object.
+# Assume that is just fills in the <PROTOCOL>, <HOSTNAME> and <FILEPATH> correctly.
+# Give me a URL, like http://www.example.com/dir/file.jpg.
+# ret->protocol = http
+# ret->hostname = www.example.com
+# ret->filepath = /dir/file.jpg
 def section_url(url):
 	sUrl = SectionedURL()
 
@@ -72,6 +100,10 @@ def section_url(url):
 
 			if nUrlSects > 1:
 				urlSects.pop(0)
-				# Set the file path
-				sUrl.set_filepath('/' + '/'.join(urlSects).rstrip('\n'))
+				# Set the file path in a disposable string
+				fpString = '/' + '/'.join(urlSects).rstrip('\n')
+
+				sUrl.set_filepath(fpString)
+				sUrl.set_parentdir(re.sub('/[^/]+$', '', fpString))
+
 	return sUrl

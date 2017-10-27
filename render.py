@@ -18,7 +18,7 @@ def format_responses(responses):
 
 # Primary function for rendering output.
 # Helper functions are above.
-def render_output(surface):
+def render_output(surface, newSurface):
 	targets = format_targets(surface.get_pending())
 	responses = []
 	fmtRes = []
@@ -44,7 +44,8 @@ def render_output(surface):
 		responses.append("%-8s%s" % ("", ""))
 
 	output = []
-	print "%-56s | %s" % (">> SCOUTED <<", ">> EXPLORED <<")
+	# print "Discovered: %d" % newSurface
+	print "%-56s | %s" % (">> SCOUTED << [%d NEW]" % newSurface, ">> EXPLORED <<")
 	print "%-8s%-48s | %-8s%s" % ("ID", "URL", "STATUS", "URL")
 	for i in range(0, rows):
 		output.append("%s | %s" % (targets[i], responses[i]))

@@ -67,10 +67,11 @@ def run_scan(target, surface):
 	rqObj = expand_target(sUrl, surface)
 
 	if rqObj.status_code == 200:
+
 		# Never returns
 		scout_mode(surface)
 
-		print 'Done.'
+		print 'Something strange surfaced...'
 	else:
 		print 'Done.'
 

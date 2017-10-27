@@ -9,23 +9,44 @@ from render import render_output
 # Import classes
 from sectionedURL import *
 from surface import *
+from recon import *
 
 def expand_target(sUrl, surface):
 	rqObj = make_request(sUrl.url(), surface)
+
+	# Create initialisable recon object
+	pr = PageRecon(sUrl)
+
+	numNew = 0
+	# Only initialise if we get something.
 	if rqObj.status_code == 200:
-		srcLines = rqObj.text
 
-		# Obtain the tags from the source code
-		tags = filter_tags(srcLines)
+		pr.initialise(rqObj) # Now we can initialise the recon obj.
 
-		# Output is a tuple of lists: (links, scripts, images, forms)
-		links, scripts, images, forms = categorise_tags(tags)
+		# srcLines = rqObj.text
+		#
+		# # Obtain the tags from the source code
+		# tags = filter_tags(srcLines)
+		#
+		# # Output is a tuple of lists: (links, scripts, images, forms)
+		# links, scripts, images, forms = categorise_tags(tags)
+		#
+		# # Testing
+		# for tag in tags:
+		# 	assert(tag in pr.tags)
+		#
+		# for link in links:
+		# 	assert(link in pr.hyperlinks)
+		#
+		# for script in scripts:
+		# 	assert(script in pr.scripts)
 
-		# Gather the next level of outgoing local links within the
-		locLinks = filter_local_links(sUrl, links)
-		numNew = surface.assimilate_list(locLinks)
+		# locLinks = filter_local_hyperlinks(sUrl, links)
+		numNew = surface.assimilate_list(pr.locals())
 
-		render_output(surface)
+	# Render the Discovery / Request output to the user
+	render_output(surface, numNew)
+
 		# print_requests(surface)
 		# print '\n>> EXPLORATION <<'
 		# print 'Discovered: %d\tNew: %d' % (len(surface.get_surface()), numNew)
