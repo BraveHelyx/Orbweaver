@@ -21,14 +21,14 @@ def request_git(sUrl):
 	print '[%d] - %s' % (rqObj.status_code, git)
 	return rqObj
 
-# Request and add target to surface
-# @return			HTTP Request Object
 def request_source(target):
 	rqObj = requests.get(target)
 
 	print '[%d] %s -> %s' % (rqObj.status_code, target, rqObj.url)
 	return rqObj
 
+# Request and add target to surface
+# @return			HTTP Request Objec
 def make_request(target, surface):
 	rqObj = requests.get(target)
 	surface.add_surface(target)

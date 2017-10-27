@@ -1,11 +1,10 @@
 #!/usr/bin/python
 
 # Written by Bruce Hely for funzies in 2017
-
 from urlreqs import make_request
 from filters import filter_tags, categorise_tags, filter_local_links
 from render import render_output
-
+from session import *
 # Import classes
 from sectionedURL import *
 from surface import *
@@ -22,47 +21,23 @@ def expand_target(sUrl, surface):
 	if rqObj.status_code == 200:
 
 		pr.initialise(rqObj) # Now we can initialise the recon obj.
-
-		# srcLines = rqObj.text
-		#
-		# # Obtain the tags from the source code
-		# tags = filter_tags(srcLines)
-		#
-		# # Output is a tuple of lists: (links, scripts, images, forms)
-		# links, scripts, images, forms = categorise_tags(tags)
-		#
-		# # Testing
-		# for tag in tags:
-		# 	assert(tag in pr.tags)
-		#
-		# for link in links:
-		# 	assert(link in pr.hyperlinks)
-		#
-		# for script in scripts:
-		# 	assert(script in pr.scripts)
-
-		# locLinks = filter_local_hyperlinks(sUrl, links)
 		numNew = surface.assimilate_list(pr.locals())
 
 	# Render the Discovery / Request output to the user
 	render_output(surface, numNew)
 
-		# print_requests(surface)
-		# print '\n>> EXPLORATION <<'
-		# print 'Discovered: %d\tNew: %d' % (len(surface.get_surface()), numNew)
-		# print_pending(surface)
 	return rqObj
 
-def scout_mode(surface):
+def scout_mode(sUrl, surface):
 	while(1):
 		if surface.get_num_pending() > 0:
 			print '\nOrbweaver Scout: "Where 2 next?"'
-			user_target_selection(surface)
+			user_target_selection(sUrl, surface)
 		else:
 			print '\nOrbweaver Scout: "Outta targets to shoot."'
 			exit()
 
-def user_target_selection(surface):
+def user_target_selection(sUrl, surface):
 	targets = surface.get_pending() # Get unexplored targets
 	nTargets = len(targets)
 
@@ -81,7 +56,13 @@ def user_target_selection(surface):
 			print "That's a dodgy 'i' m8. R u blind?!"
 	except:
 		if selection == 'q': # Escape Condition
-			print "l8tr buddi."
+			print "Save The Session?"
+			choice = raw_input()
+
+			if choice == 'y' or choice == 'Y':
+				save_session(sUrl, surface) # SAVE THE SESSION!
+
+			print "l8tr buddy."
 			exit()
 		pass
 
