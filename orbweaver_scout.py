@@ -16,21 +16,29 @@ def expand_target(sUrl, surface):
 	# Create initialisable recon object
 	pr = PageRecon(sUrl)
 
-	numNew = 0
+	# numNew = 0
 	# Only initialise if we get something.
 	if rqObj.status_code == 200:
 
 		pr.initialise(rqObj) # Now we can initialise the recon obj.
-		numNew = surface.assimilate_list(pr.locals())
+		# numNew = surface.assimilate_list(pr.locals())
 
-	# Render the Discovery / Request output to the user
-	render_output(surface, numNew)
+	# # Render the Discovery / Request output to the user
+	# render_output(surface, numNew)
 
-	return rqObj
+	return pr
 
 def scout_mode(sUrl, surface):
+	newSurface = []
+	if surface.get_num_scouted() == 0:
+		recon = expand_target(sUrl, surface)
+		newSurface.append(surface.assimilate_list(recon.locals()))
+
+	render_output(surface, newSurface)
+	# Primary Loop
 	while(1):
-		if surface.get_num_pending() > 0:
+		surface.print_surface()
+		if surface.get_num_scouted() > 0:
 			print '\nOrbweaver Scout: "Where 2 next?"'
 			user_target_selection(sUrl, surface)
 		else:
@@ -66,7 +74,11 @@ def user_target_selection(sUrl, surface):
 			exit()
 		pass
 
+	# If we got a valid target
 	if target != '':
 		print 'Expanding Target(%s). Loading...' % target
-		expand_target(section_url(target), surface)
+		recon = expand_target(section_url(target), surface)
+		newSurface = surface.assimilate_list(recon.locals())
+		render_output(surface, newSurface)
+
 

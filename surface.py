@@ -9,8 +9,20 @@ class Surface:
 
 	# Will also ignore duplicate adds
 	def add_surface(self, url):
+		oldLen = len(self.surface)
+
 		self.surface.append(url)
 		self.surface = list(sorted(set(self.surface)))
+
+		newLen = len(self.surface)
+
+		newSurface = False
+		if oldLen != newLen:
+			# NEW SURFACE FOUND
+			newSurface = True
+
+		return newSurface
+
 
 	def add_rq_response(self, rqObj, target):
 		self.reqDict[target] = rqObj
@@ -23,11 +35,13 @@ class Surface:
 
 	# Returns number of new nodes
 	def assimilate_list(self, targets):
-		oldLen = len(self.surface)
+		newSurface = []
 		for target in targets:
-			self.add_surface(target)
-		newLen = len(self.surface)
-		return newLen - oldLen
+			newSurf = self.add_surface(target.rstrip('\n'))
+			if newSurf is True:
+				# print 'new surface'
+				newSurface.append(target.rstrip('\n'))
+		return newSurface
 
 	def get_pending(self):
 		keys = self.reqDict.keys()
@@ -37,8 +51,13 @@ class Surface:
 				pending.append(url)
 		return pending
 
-	def get_num_pending(self):
-		return len(self.get_pending())
+	def get_num_scouted(self):
+		return len(self.surface)
+
+	def print_surface(self):
+		print '[SURFACE]'
+		print 'surface.surface has %d records.' % len(self.surface)
+
 
 def print_requests(surface):
 	out = ''

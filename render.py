@@ -45,7 +45,7 @@ def render_output(surface, newSurface):
 
 	output = []
 	# print "Discovered: %d" % newSurface
-	print "%-56s | %s" % (">> SCOUTED << [%d NEW]" % newSurface, ">> EXPLORED <<")
+	print "%-56s | %s" % (">> SCOUTED << [%d NEW]" % len(newSurface), ">> EXPLORED <<")
 	print "%-8s%-48s | %-8s%s" % ("ID", "URL", "STATUS", "URL")
 	for i in range(0, rows):
 		output.append("%s | %s" % (targets[i], responses[i]))
