@@ -90,7 +90,7 @@ def filter_local_links(sUrl, links):
 	links = list(sorted(set(links)))
 
 	for link in links:
-		rePattern = re.compile(' href="(.+)"')
+		rePattern = re.compile(' href=["]?([^" ]+)')
 
 		hostPattern = re.compile('^' + sUrl.server() + '/(.+)')
 		rootPattern = re.compile('^' + '/(.+)')

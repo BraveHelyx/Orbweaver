@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+from sectionedURL import *
+
 # Written by Bruce Hely for funzies in 2017
 # Keeps track of the surface area of a recon investigation.
 class Surface:
@@ -37,10 +39,12 @@ class Surface:
 	def assimilate_list(self, targets):
 		newSurface = []
 		for target in targets:
-			newSurf = self.add_surface(target.rstrip('\n'))
+			sUrl = section_url(target)
+			newSurf = self.add_surface(sUrl.url())
+
 			if newSurf is True:
 				# print 'new surface'
-				newSurface.append(target.rstrip('\n'))
+				newSurface.append(sUrl.url())
 		return newSurface
 
 	def get_pending(self):

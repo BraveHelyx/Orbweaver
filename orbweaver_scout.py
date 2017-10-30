@@ -10,7 +10,10 @@ from sectionedURL import *
 from surface import *
 from recon import *
 
+# Primary function for making a request to a url.
+# Returns a PageRecon object from recon.py
 def expand_target(sUrl, surface):
+	sUrl.print_values()
 	rqObj = make_request(sUrl.url(), surface)
 
 	# Create initialisable recon object
@@ -21,13 +24,10 @@ def expand_target(sUrl, surface):
 	if rqObj.status_code == 200:
 
 		pr.initialise(rqObj) # Now we can initialise the recon obj.
-		# numNew = surface.assimilate_list(pr.locals())
-
-	# # Render the Discovery / Request output to the user
-	# render_output(surface, numNew)
 
 	return pr
 
+# Primary driving loop for scout mode.
 def scout_mode(sUrl, surface):
 	newSurface = []
 	if surface.get_num_scouted() == 0:
@@ -37,7 +37,7 @@ def scout_mode(sUrl, surface):
 	render_output(surface, newSurface)
 	# Primary Loop
 	while(1):
-		surface.print_surface()
+		# surface.print_surface()
 		if surface.get_num_scouted() > 0:
 			print '\nOrbweaver Scout: "Where 2 next?"'
 			user_target_selection(sUrl, surface)
@@ -45,6 +45,8 @@ def scout_mode(sUrl, surface):
 			print '\nOrbweaver Scout: "Outta targets to shoot."'
 			exit()
 
+# Asks the user to select a target.
+# Expands before asking again
 def user_target_selection(sUrl, surface):
 	targets = surface.get_pending() # Get unexplored targets
 	nTargets = len(targets)

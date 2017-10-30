@@ -9,11 +9,16 @@ class SectionedURL:
 		self.proto = '' 	# <PROTO>
 		self.hostName = '' 	# <HOSTNAME>
 		self.filePath = ''	# <FILEPATH>
+		self.arguments = ''	# <ARGUMENTS
 
 		self.parentDir = '' # <PARENTDIR>
+
 	# <PROTO>://<HOSTNAME><FILEPATH>
 	# http://www.example.com/file/1.jpg
 	def url(self):
+		return self.proto + '://' + self.hostName + self.filePath
+
+	def uri(self):
 		return self.proto + '://' + self.hostName + self.filePath
 
 	# <PROTO>
@@ -50,9 +55,12 @@ class SectionedURL:
 	def set_parentdir(self, newParent):
 		self.parentDir = newParent
 
-	def print_values(self):
-		print "[SectionedURL]\n\tProtocol: %s\n\tHostname: %s\n\tFile Path: %s\n\tParent Dir: %s\n" % (self.proto, self.hostName, self.filePath, self.parentDir)
+	def set_arguments(self, newArgs):
+		self.arguments = newArgs
 
+	def print_values(self):
+		print "[SectionedURL]\n\tProtocol: %s\n\tHostname: %s\n\tFile Path: %s\n\tArguments: %s\n\tParent Dir: %s\n" % (self.proto, self.hostName, self.filePath, self.arguments, self.parentDir)
+		# print "Url: %s" % self.url()
 	# Coupled Operators Below
 	def equal_urls(self, sUrl):
 		return self.url() == sUrl.url()
@@ -65,6 +73,9 @@ class SectionedURL:
 
 	def equal_filepaths(self, sUrl):
 		return self.filepath() == sUrl.filepath
+
+	def equal_arguments(self, sUrl):
+		return self.arguments() == sUrl.arguments
 
 
 # This is the function you call in order to initialise the sectioned url object.
@@ -103,7 +114,17 @@ def section_url(url):
 				# Set the file path in a disposable string
 				fpString = '/' + '/'.join(urlSects).rstrip('\n')
 
-				sUrl.set_filepath(fpString)
-				sUrl.set_parentdir(re.sub('/[^/]+$', '', fpString))
+				argSections = fpString.split('?')
+
+				if len(argSections) == 2:
+					sUrl.set_arguments(argSections[1])
+					sUrl.set_filepath(argSections[0]) # 360 no scope bby.
+				else:
+					sUrl.set_filepath(argSections[0])
+
+				# sUrl.set_filepath(fpString)
+
+				# Set the parent directory
+				sUrl.set_parentdir(re.sub('/[^/]+$', '', argSections[0]))
 
 	return sUrl
