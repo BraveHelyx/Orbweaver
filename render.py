@@ -6,7 +6,7 @@ def format_targets(targets):
 	formattedTargets = []
 	i = 0
 	for target in targets:
-		formattedTargets.append("%-8s%-48s" % (i, target))
+		formattedTargets.append("%-8s%-56s" % (i, target))
 		i += 1
 	return formattedTargets
 
@@ -27,7 +27,11 @@ def render_output(surface, newSurface):
 	# Format the response list right
 	for key in rqs.keys():
 		rqObj = rqs[key]
-		resString = key + ' -> ' + rqObj.url
+		resString = ''
+		if key != rqObj.url.rstrip('/'):
+			resString = key + ' -> ' + rqObj.url
+		else:
+			resString = key
 		fmtRes.append((str(rqObj.status_code), resString))
 
 	responses = format_responses(fmtRes)
@@ -38,15 +42,15 @@ def render_output(surface, newSurface):
 	# Padd the lists
 	rows = max(numTargets, numResponses)
 	while (len(targets) < rows):
-		targets.append("%-8s%-48s" % ("", ""))
+		targets.append("%-8s%-56s" % ("", ""))
 
 	while (len(responses) < rows):
 		responses.append("%-8s%s" % ("", ""))
 
 	output = []
 	# print "Discovered: %d" % newSurface
-	print "%-56s | %s" % (">> SCOUTED << [%d NEW]" % len(newSurface), ">> EXPLORED <<")
-	print "%-8s%-48s | %-8s%s" % ("ID", "URL", "STATUS", "URL")
+	print "%-64s | %s" % (">> SCOUTED << [%d NEW]" % len(newSurface), ">> EXPLORED <<")
+	print "%-8s%-56s | %-8s%s" % ("ID", "URL", "STATUS", "URL")
 	for i in range(0, rows):
 		output.append("%s | %s" % (targets[i], responses[i]))
 		print "%s | %s" % (targets[i], responses[i])

@@ -110,6 +110,6 @@ def filter_local_links(sUrl, links):
 
 				localLinks.append(sUrl.parentpath + '/' + lMatch.group(1))
 			elif hMatch is not None:
-				localLinks.append(sUrl.server() + '/' + hMatch.group(1))
+				localLinks.append(sUrl.url_server() + '/' + hMatch.group(1))
 
 	return localLinks
