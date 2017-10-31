@@ -43,7 +43,7 @@ def main():
 			domain = domain + 'index.html'
 
 		# Create the sectioned URL for the target
-	 	sUrl = section_url(domain)
+	 	sUrl = SectionedURL(domain)
 		# sUrl.print_values()
 
 		# Create the session surface object
@@ -56,7 +56,7 @@ def main():
 			selection = raw_input()
 			if len(selection) >= 1:
 				if selection[0] == 'y' or selection[0] == 'Y':
-					load_unexplored('./saved/' + sUrl.hostname(), sfc)
+					load_unexplored('./saved/' + sUrl.hostname, sfc)
 
 
 		# Begin the scan with the loaded/unloaded surface object
@@ -68,12 +68,12 @@ def run_scan(sUrl, surface):
 	res = []
 	validRes = []
 
-	print 'Received valid target(%s). Scanning...' % sUrl.url()
+	print 'Received valid target(%s). Scanning...' % sUrl.url_full()
 
 	# Get the sections once for easability
-	proto = sUrl.protocol()
-	hostName = sUrl.hostname()
-	filePath = sUrl.filepath()
+	proto = sUrl.scheme
+	hostName = sUrl.hostname
+	filePath = sUrl.filepath
 
 	# Never returns
 	scout_mode(sUrl, surface)

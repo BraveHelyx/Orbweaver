@@ -92,7 +92,7 @@ def filter_local_links(sUrl, links):
 	for link in links:
 		rePattern = re.compile(' href=["]?([^" ]+)')
 
-		hostPattern = re.compile('^' + sUrl.server() + '/(.+)')
+		hostPattern = re.compile('^' + sUrl.url_server() + '/(.+)')
 		rootPattern = re.compile('^' + '/(.+)')
 		localPattern = re.compile('^' + './(.+)')
 
@@ -105,10 +105,10 @@ def filter_local_links(sUrl, links):
 			lMatch = localPattern.search(url)
 
 			if rMatch is not None:
-				localLinks.append(sUrl.server() + '/' + rMatch.group(1))
+				localLinks.append(sUrl.url_server() + '/' + rMatch.group(1))
 			elif lMatch is not None:
 
-				localLinks.append(sUrl.parent_dir() + '/' + lMatch.group(1))
+				localLinks.append(sUrl.parentpath + '/' + lMatch.group(1))
 			elif hMatch is not None:
 				localLinks.append(sUrl.server() + '/' + hMatch.group(1))
 

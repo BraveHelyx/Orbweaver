@@ -52,7 +52,7 @@ def load_unexplored(saveDir, surface):
 # Relative to the saved directory
 # sessDir = ./saved/<HOSTNAME>
 def sess_exist(sUrl):
-	sessDir = './saved/' + sUrl.hostname()
+	sessDir = './saved/' + sUrl.hostname
 	ret = False
 	if path.isfile(sessDir + '/unexplored'):
 		ret = True
@@ -61,15 +61,15 @@ def sess_exist(sUrl):
 # Writes out the request objects to disk that we have explored
 def write_explored(sUrl, surface):
 	requests = surface.get_requests()
-	# saveDir = './saved/' + sUrl.hostname() + '/explored/'
-	saveDir = './saved/' + sUrl.hostname() + '/src/'
+	# saveDir = './saved/' + sUrl.hostname + '/explored/'
+	saveDir = './saved/' + sUrl.hostname + '/src/'
 
 	# Let's iterate through the requests we made.
 	for key in requests.keys():
 		request = requests[key]
 
 		if request.status_code == 200:
-			filePath = request.url.lstrip(sUrl.protocol() + '://') # Grab the URL of the file
+			filePath = request.url.lstrip(sUrl.scheme + '://') # Grab the URL of the file
 			savePath = saveDir + filePath
 
 			print 'Filepath: %s\nSavepath: %s' % (filePath, savePath)
@@ -98,7 +98,7 @@ def write_explored(sUrl, surface):
 
 # High level API for saving the currence surface for the project specified in sUrl.
 def save_session(sUrl, surface):
-	saveDir = './saved/' + sUrl.hostname()
+	saveDir = './saved/' + sUrl.hostname
 	srcTree = saveDir + '/explored'
 
 	# If the saved directory doesn't exist, make it.

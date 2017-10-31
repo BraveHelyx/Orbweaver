@@ -14,7 +14,7 @@ from recon import *
 # Returns a PageRecon object from recon.py
 def expand_target(sUrl, surface):
 	sUrl.print_values()
-	rqObj = make_request(sUrl.url(), surface)
+	rqObj = make_request(sUrl.url_full(), surface)
 
 	# Create initialisable recon object
 	pr = PageRecon(sUrl)
@@ -79,7 +79,7 @@ def user_target_selection(sUrl, surface):
 	# If we got a valid target
 	if target != '':
 		print 'Expanding Target(%s). Loading...' % target
-		recon = expand_target(section_url(target), surface)
+		recon = expand_target(SectionedURL(target), surface)
 		newSurface = surface.assimilate_list(recon.locals())
 		render_output(surface, newSurface)
 

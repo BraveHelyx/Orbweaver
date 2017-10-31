@@ -10,18 +10,21 @@ class Surface:
 		self.surface = [] # All Local URLs
 
 	# Will also ignore duplicate adds
+	# Change me to deal with sUrls
 	def add_surface(self, url):
-		oldLen = len(self.surface)
-
-		self.surface.append(url)
-		self.surface = list(sorted(set(self.surface)))
-
-		newLen = len(self.surface)
-
 		newSurface = False
-		if oldLen != newLen:
-			# NEW SURFACE FOUND
-			newSurface = True
+
+		if url != '':
+			oldLen = len(self.surface)
+			self.surface.append(url)
+			self.surface = list(sorted(set(self.surface)))
+
+			newLen = len(self.surface)
+
+
+			if oldLen != newLen:
+				# NEW SURFACE FOUND
+				newSurface = True
 
 		return newSurface
 
@@ -32,6 +35,12 @@ class Surface:
 	def get_surface(self):
 		return self.surface
 
+	def get_surface_surls(self):
+		sUrlList = []
+		for surf in self.surface:
+			sUrlList.append(SectionedURL(surf))
+		return sUrlList
+
 	def get_requests(self):
 		return self.reqDict
 
@@ -39,12 +48,12 @@ class Surface:
 	def assimilate_list(self, targets):
 		newSurface = []
 		for target in targets:
-			sUrl = section_url(target)
-			newSurf = self.add_surface(sUrl.url())
+			sUrl = SectionedURL(target)
+			newSurf = self.add_surface(sUrl.url_full())
 
 			if newSurf is True:
 				# print 'new surface'
-				newSurface.append(sUrl.url())
+				newSurface.append(sUrl.url_full())
 		return newSurface
 
 	def get_pending(self):
