@@ -39,8 +39,8 @@ def main():
 		if not re.match('^http[s]?://', domain):
 			domain = 'http://' + domain
 
-		if domain[len(domain)-1] == '/':
-			domain = domain + 'index.html'
+		# if domain[len(domain)-1] == '/':
+		# 	domain = domain + 'index.html'
 
 		# Create the sectioned URL for the target
 	 	sUrl = SectionedURL(domain)
