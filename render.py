@@ -1,12 +1,15 @@
 #!/usr/bin/python
 # Written by Bruce Hely for funzies in 2017
+# from termcolor import colored
 
-
-def format_targets(targets):
+def format_targets(targets, newSurface):
 	formattedTargets = []
 	i = 0
 	for target in targets:
-		formattedTargets.append("%-8s%-56s" % (i, target))
+		if target in newSurface:
+			formattedTargets.append("%-8s%-56s" % (i, target + ' [*]'))
+		else:
+			formattedTargets.append("%-8s%-56s" % (i, target))
 		i += 1
 	return formattedTargets
 
@@ -19,7 +22,7 @@ def format_responses(responses):
 # Primary function for rendering output.
 # Helper functions are above.
 def render_output(surface, newSurface):
-	targets = format_targets(surface.get_pending())
+	targets = format_targets(surface.get_pending(), newSurface)
 	responses = []
 	fmtRes = []
 	rqs = surface.get_requests()
@@ -28,7 +31,7 @@ def render_output(surface, newSurface):
 	for key in rqs.keys():
 		rqObj = rqs[key]
 		resString = ''
-		if key != rqObj.url.rstrip('/'):
+		if key.rstrip('/') != rqObj.url.rstrip('/'):
 			resString = key + ' -> ' + rqObj.url
 		else:
 			resString = key
